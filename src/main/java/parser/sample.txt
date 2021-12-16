@@ -1,0 +1,17 @@
+package kal.example;
+
+import java.util.ArrayList;
+import java.util.ArrayList;
+
+class Jopa extends Exception, Cringe implements Kakasha {
+    final int x = 1, y = 2;
+    private int jopaCounter = 228;
+
+    public static int methodA() {
+        int k = 1;
+    }
+
+    public static int methodA() {
+        int k = 12;
+    }
+}
