@@ -2,14 +2,6 @@ grammar JavaProgram;
 
 // PARSER
 
-//variables (just declaration and declaration + definition)
-//method_call + constructor
-//for, while
-// new ?
-
-
-// :TODO: return key-word
-
 program returns[String str] @init{$str = "";}:
     java_package
     {$str += $java_package.str + "<br>\n";}
@@ -99,12 +91,34 @@ final_modifier returns[String str] @init{$str = "";}:
     (FINAL {$str += "<span style=\"color: blue\">" + $FINAL.text + "</span>" + " ";})?;
 
 method_body[int indent] returns[String str] @init{$str = "";}:
+    (base_action[indent] {$str += $base_action.str;})*
+    (return_keyword[indent] {$str += $return_keyword.str;})?;
+
+base_action[int indent] returns[String str] @init{$str = "";}:
     (variable[indent] {$str += $variable.str;} |
         (method_call[indent] SEMICOLON {$str += $method_call.str + $SEMICOLON.text + "<br>\n";}) |
         (new_call[indent] SEMICOLON {$str += $new_call.str + $SEMICOLON.text + "<br>\n";}) |
-        (while_loop[indent] {$str += $while_loop.str;})
-    )*
-    (return_keyword[indent] {$str += $return_keyword.str;})?;
+        (while_loop[indent] {$str += $while_loop.str;}) |
+        (if_[indent] {$str += $if_.str;})
+    );
+
+if_[int indent] returns[String str] @init{$str = "&nbsp;".repeat(indent);}:
+    IF_ {$str +=
+        "<span style=\"color: blue\">" +
+    $IF_.text + "</span>" + " ";}
+    LBRACKET {$str += $LBRACKET.text;}
+    cond {$str += $cond.str;}
+    RBRACKET {$str += $RBRACKET.text;}
+    ((l=LEFT_BRACE b=method_body[indent + 4] r=RIGHT_BRACE {$str += $l.text + "<br>\n" + $b.str + "<br>\n" + "&nbsp;".repeat(indent) + $r.text;}) |
+    (ac=base_action[indent + 4] {$str += "<br>\n" + $ac.str + "&nbsp;".repeat(indent);}))
+    (ELSE_ {$str += " " +
+        "<span style=\"color: blue\">" +
+    $ELSE_.text + "</span>";}
+        ((ll=LEFT_BRACE bb=method_body[indent + 4] rr=RIGHT_BRACE {$str += $ll.text + "<br>\n" + $bb.str + "&nbsp;".repeat(indent) + $rr.text + "<br>\n";}) |
+            (acc=base_action[indent + 4] {$str += "<br>\n" + $acc.str + "<br>\n";}))
+    )?
+
+    ;
 
 // value - smth what stays after '=', or method call args
 value returns[String str] @init{$str = "";}:
@@ -175,6 +189,8 @@ return_keyword[int indent] returns[String str] @init{$str = "&nbsp;".repeat(inde
 
 SKIP_WHITESPACES: [ \n\r\t]+ -> skip;
 
+ELSE_: 'else';
+IF_: 'if';
 RETURN_KEYWORD: 'return';
 BOOL_TRUE: 'true';
 BOOL_FALSE: 'false';

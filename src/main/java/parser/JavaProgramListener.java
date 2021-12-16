@@ -158,6 +158,26 @@ public interface JavaProgramListener extends ParseTreeListener {
 	 */
 	void exitMethod_body(JavaProgramParser.Method_bodyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JavaProgramParser#base_action}.
+	 * @param ctx the parse tree
+	 */
+	void enterBase_action(JavaProgramParser.Base_actionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaProgramParser#base_action}.
+	 * @param ctx the parse tree
+	 */
+	void exitBase_action(JavaProgramParser.Base_actionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaProgramParser#if_}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf_(JavaProgramParser.If_Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaProgramParser#if_}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf_(JavaProgramParser.If_Context ctx);
+	/**
 	 * Enter a parse tree produced by {@link JavaProgramParser#value}.
 	 * @param ctx the parse tree
 	 */

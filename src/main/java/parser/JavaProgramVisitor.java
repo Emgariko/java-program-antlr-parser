@@ -101,6 +101,18 @@ public interface JavaProgramVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMethod_body(JavaProgramParser.Method_bodyContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JavaProgramParser#base_action}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBase_action(JavaProgramParser.Base_actionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaProgramParser#if_}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf_(JavaProgramParser.If_Context ctx);
+	/**
 	 * Visit a parse tree produced by {@link JavaProgramParser#value}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

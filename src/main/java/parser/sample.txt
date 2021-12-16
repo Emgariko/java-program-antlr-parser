@@ -4,22 +4,17 @@ import java.util.ArrayList;
 import java.util.ArrayList;
 
 class Derived extends Base implements InterfaceA, InterfaceB {
-    final int x = 1, y = 2;
-    private int counter = 228;
-
-    public static int methodA() {
-        int b = 123;
-        int k = b, t, tt, ttt = b;
-        String str = "test";
-        System.out.println(str);
-        return 1;
-    }
-
     public static int methodA() {
         final int k = 12;
         final String test = new String("hi");
         while (true) {
-            String testt = new String("hello");
+            if (x == 2) {
+                String str = 123;
+            } else {
+                String aboba = "aboba";
+                if (true)
+                    sout(123);
+            }
         }
     }
 }
