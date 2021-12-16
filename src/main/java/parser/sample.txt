@@ -3,15 +3,22 @@ package kal.example;
 import java.util.ArrayList;
 import java.util.ArrayList;
 
-class Jopa extends Exception, Cringe implements Kakasha {
+class Derived extends Base implements InterfaceA, InterfaceB {
     final int x = 1, y = 2;
-    private int jopaCounter = 228;
+    private int counter = 228;
 
     public static int methodA() {
-        int k = 1;
+        int b = 123;
+        int k = b, t, tt, ttt = b;
+        String str = "test";
+        System.out.println(str);
     }
 
     public static int methodA() {
-        int k = 12;
+        final int k = 12;
+        final String test = new String("hi");
+        while (true) {
+            String testt = new String("hello");
+        }
     }
 }

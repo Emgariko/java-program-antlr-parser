@@ -227,4 +227,44 @@ public interface JavaProgramListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNew_call(JavaProgramParser.New_callContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaProgramParser#while_loop}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhile_loop(JavaProgramParser.While_loopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaProgramParser#while_loop}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhile_loop(JavaProgramParser.While_loopContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaProgramParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCond(JavaProgramParser.CondContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaProgramParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCond(JavaProgramParser.CondContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaProgramParser#bool_value}.
+	 * @param ctx the parse tree
+	 */
+	void enterBool_value(JavaProgramParser.Bool_valueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaProgramParser#bool_value}.
+	 * @param ctx the parse tree
+	 */
+	void exitBool_value(JavaProgramParser.Bool_valueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaProgramParser#comp}.
+	 * @param ctx the parse tree
+	 */
+	void enterComp(JavaProgramParser.CompContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaProgramParser#comp}.
+	 * @param ctx the parse tree
+	 */
+	void exitComp(JavaProgramParser.CompContext ctx);
 }

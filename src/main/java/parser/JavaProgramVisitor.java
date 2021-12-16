@@ -142,4 +142,28 @@ public interface JavaProgramVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNew_call(JavaProgramParser.New_callContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaProgramParser#while_loop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhile_loop(JavaProgramParser.While_loopContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaProgramParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCond(JavaProgramParser.CondContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaProgramParser#bool_value}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBool_value(JavaProgramParser.Bool_valueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaProgramParser#comp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComp(JavaProgramParser.CompContext ctx);
 }

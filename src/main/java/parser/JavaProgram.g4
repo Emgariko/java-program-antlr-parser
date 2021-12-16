@@ -43,9 +43,9 @@ class_definition returns[String str] @init{$str = "";}:
 java_extends returns[String str] @init{$str = "";}:
     EXTENDS
     x=WORD {$str += $EXTENDS.text + " " +
-            "<span style=\"color: blue\">" + $x.text + "</span>";}
-    (COMMA y=WORD {$str += $COMMA.text + " " +
-                "<span style=\"color: blue\">" + $y.text + "</span>";})*;
+            "<span style=\"color: blue\">" + $x.text + "</span>";};
+//    (COMMA y=WORD {$str += $COMMA.text + " " +
+//                "<span style=\"color: blue\">" + $y.text + "</span>";})*;
 
 java_implements returns[String str] @init{$str = "";}:
     IMPLEMENTS
@@ -81,7 +81,7 @@ variable_type returns[String str] @init{$str = "";}:
 method[int indent] returns[String str] @init{$str = "";}:
     (acceess_modifier {$str += $acceess_modifier.str + " ";})?
     (static_modifier {$str += $static_modifier.str + " " ;})?
-    // :TODO: final?
+    (final_modifier {$str += $final_modifier.str + " ";})?
     vt=variable_type w=WORD LBRACKET {$str += $vt.str + " " + $w.text + $LBRACKET.text;}
     (tx=variable_type x=WORD {$str += $tx.str + " " + $x.text;}
     (COMMA ty=variable_type y=WORD {$str += $COMMA.text + " " + $ty.str + " " + $y.text;})*)?
@@ -99,27 +99,31 @@ final_modifier returns[String str] @init{$str = "";}:
     (FINAL {$str += "<span style=\"color: blue\">" + $FINAL.text + "</span>" + " ";})?;
 
 method_body[int indent] returns[String str] @init{$str = "";}:
-    (variable[indent] {$str += $variable.str;}
-//     method_call
+    (variable[indent] {$str += $variable.str;} |
+        (method_call[indent] SEMICOLON {$str += $method_call.str + $SEMICOLON.text + "<br>\n";}) |
+        (new_call[indent] SEMICOLON {$str += $new_call.str + $SEMICOLON.text + "<br>\n";}) |
+        (while_loop[indent] {$str += $while_loop.str;})
     )*;
 
 // value - smth what stays after '=', or method call args
 value returns[String str] @init{$str = "";}:
     int_value {$str += $int_value.str;} |
     string {$str += $string.str;} |
-    method_call {$str += $method_call.str;} ;
-//    new_call |
-//    WORD;  // variable value usage
+    method_call[0] {$str += $method_call.str;} |
+    new_call[0] {$str += $new_call.str;} |
+    WORD {$str += $WORD.text;};  // variable value
 
 string returns[String str] @init{$str = "";}:
     x=QUOTE {$str += $x.text;}
-    (WORD {$str += $WORD.text;} | int_value {$str += $int_value.str;} )* // :TODO: may be add another characters
+    (WORD {$str +=
+            "<span style=\"color: rgb(3 106 7)\">" + $WORD.text + "</span>";} |
+     int_value {$str += $int_value.str;})*
     y=QUOTE {$str += $y.text;};
 
 int_value returns[String str] @init{$str = "";}:
     INT {$str += "<span style=\"color: #a04caf\">" + $INT.text + "</span>";};
 
-method_call returns[String str] @init{$str = "";}:
+method_call[int indent] returns[String str] @init{$str = "&nbsp;".repeat(indent);}:
     dt=dot_separated_words LBRACKET {$str += $dt.str + $LBRACKET.text;} (args {$str += $args.str;})?
     RBRACKET {$str += $RBRACKET.text;};
 
@@ -128,16 +132,46 @@ dot_separated_words returns[String str] @init{$str = "";}:
     (DOT y=WORD {$str += $DOT.text + $y.text;})*;
 
 args returns[String str] @init{$str = "";}:
-    x=args COMMA value {$str += $x.str + $COMMA.text + " " + $value.str;} |
-    value {$str += $value.str;};
+    x=value {$str += $x.str;}
+    (COMMA y=value {$str += $COMMA.text + " " + $y.str;})*;
 
-new_call returns[String str] @init{$str = "";}:
-    NEW WORD LBRACKET {$str += $NEW.text + $WORD.text + $LBRACKET.text;}
-    (args{$str += $args.text;})?
+new_call[int indent] returns[String str] @init{$str = "&nbsp;".repeat(indent);}:
+    NEW {$str += "<span style=\"color: blue\">" + $NEW.text + "</span>" + " ";}
+    WORD LBRACKET {$str += $WORD.text + $LBRACKET.text;}
+    (args{$str += $args.str;})?
     RBRACKET {$str += $RBRACKET.text;};
+
+while_loop[int indent] returns[String str] @init{$str = "&nbsp;".repeat(indent);}:
+    WHILE {$str += "<span style=\"color: blue\">" + $WHILE.text + "</span>" + " ";}
+    LBRACKET {$str += $LBRACKET.text;}
+    cond {$str += $cond.str;}
+    RBRACKET {$str += $RBRACKET.text + " ";}
+    LEFT_BRACE {$str += $LEFT_BRACE.text + "<br>\n";}
+    method_body[indent + 4] {$str += $method_body.str;}
+    RIGHT_BRACE {$str += "&nbsp;".repeat(indent) + $RIGHT_BRACE.text + "<br>\n";};
+
+cond returns[String str] @init{$str = "";}:
+    (x=value {$str += $x.str + " ";}
+    comp {$str += $comp.str + " " ;}
+    y=value {$str += $y.str;}) |
+    bool_value {$str += $bool_value.str;};
+
+bool_value returns[String str] @init{$str = "";}:
+    (BOOL_TRUE {$str += "<span style=\"color: blue\">" + $BOOL_TRUE.text + "</span>";}) |
+    (BOOL_FALSE {$str += "<span style=\"color: blue\">" + $BOOL_FALSE.text + "</span>";});
+
+comp returns[String str] @init{$str = "";}:
+    (LE {$str += $LE.text;}) |
+    (GR {$str += $GR.text;}) |
+    (EQ {$str += $EQ.text;}) |
+    (LEQ {$str += $LEQ.text;}) |
+    (GEQ {$str += $GEQ.text;});
 
 SKIP_WHITESPACES: [ \n\r\t]+ -> skip;
 
+BOOL_TRUE: 'true';
+BOOL_FALSE: 'false';
+WHILE: 'while';
 NEW: 'new';
 JAVA_PACKAGE: 'package';
 JAVA_IMPORT: 'import';
@@ -147,7 +181,7 @@ IMPLEMENTS: 'implements';
 ACCESS_MODIFIER: ('private' | 'public' | 'protected');
 STATIC: 'static';
 FINAL: 'final';
-WORD: [a-zA-Z]+; // variables, methods, Classes names
+WORD: [a-zA-Z]+; // variables, methods, class names
 INT: [0-9]+;
 ASSIGN: '=';
 SEMICOLON: ';';
@@ -158,3 +192,8 @@ QUOTE: '"';
 DOT: '.';
 LEFT_BRACE: '{';
 RIGHT_BRACE: '}';
+LE : '<';
+GR : '>';
+EQ : '==';
+LEQ : '<=';
+GEQ : '<=';
