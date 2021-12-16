@@ -267,4 +267,14 @@ public interface JavaProgramListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitComp(JavaProgramParser.CompContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaProgramParser#return_keyword}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn_keyword(JavaProgramParser.Return_keywordContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaProgramParser#return_keyword}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn_keyword(JavaProgramParser.Return_keywordContext ctx);
 }

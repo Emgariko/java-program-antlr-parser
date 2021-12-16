@@ -12,6 +12,7 @@ class Derived extends Base implements InterfaceA, InterfaceB {
         int k = b, t, tt, ttt = b;
         String str = "test";
         System.out.println(str);
+        return 1;
     }
 
     public static int methodA() {

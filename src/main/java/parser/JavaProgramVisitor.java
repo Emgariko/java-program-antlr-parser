@@ -166,4 +166,10 @@ public interface JavaProgramVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitComp(JavaProgramParser.CompContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaProgramParser#return_keyword}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturn_keyword(JavaProgramParser.Return_keywordContext ctx);
 }

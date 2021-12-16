@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class Main {
+
     public static void main( String[] args) throws Exception
     {
         JavaProgramLexer expressionLexer = new JavaProgramLexer(CharStreams.fromFileName("src/main/java/parser/sample.txt"));

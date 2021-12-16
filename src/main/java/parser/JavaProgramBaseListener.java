@@ -323,6 +323,18 @@ public class JavaProgramBaseListener implements JavaProgramListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitComp(JavaProgramParser.CompContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReturn_keyword(JavaProgramParser.Return_keywordContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturn_keyword(JavaProgramParser.Return_keywordContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

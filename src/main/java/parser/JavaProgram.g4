@@ -103,7 +103,8 @@ method_body[int indent] returns[String str] @init{$str = "";}:
         (method_call[indent] SEMICOLON {$str += $method_call.str + $SEMICOLON.text + "<br>\n";}) |
         (new_call[indent] SEMICOLON {$str += $new_call.str + $SEMICOLON.text + "<br>\n";}) |
         (while_loop[indent] {$str += $while_loop.str;})
-    )*;
+    )*
+    (return_keyword[indent] {$str += $return_keyword.str;})?;
 
 // value - smth what stays after '=', or method call args
 value returns[String str] @init{$str = "";}:
@@ -167,8 +168,14 @@ comp returns[String str] @init{$str = "";}:
     (LEQ {$str += $LEQ.text;}) |
     (GEQ {$str += $GEQ.text;});
 
+return_keyword[int indent] returns[String str] @init{$str = "&nbsp;".repeat(indent);}:
+    RETURN_KEYWORD {$str += "<span style=\"color: blue\">" + $RETURN_KEYWORD.text + "</span>";}
+    (value {$str += " " + $value.str;})?
+    SEMICOLON {$str += $SEMICOLON.text + "<br>\n";};
+
 SKIP_WHITESPACES: [ \n\r\t]+ -> skip;
 
+RETURN_KEYWORD: 'return';
 BOOL_TRUE: 'true';
 BOOL_FALSE: 'false';
 WHILE: 'while';
